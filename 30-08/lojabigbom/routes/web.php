@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\VendedoresController;
+use App\Http\Controllers\ProdutosController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,3 +28,5 @@ Route::get('/avisos', function(){
 });
 
 Route::resource('/clientes', App\Http\Controllers\ClienteController::class);
+Route::resource('/vendedores', App\Http\Controllers\VendedoresController::class);
+Route::resource('/produtos', App\Http\Controllers\ProdutosController::class);

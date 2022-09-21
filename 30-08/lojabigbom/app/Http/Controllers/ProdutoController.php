@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Clientes;
+use App\Models\Produtos;
 
-class ClienteController extends Controller
+class ProdutoController extends Controller
 {
-    private $qtdPorPagina = 5;
 
+    private $qtdPorPagina = 5;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $cli = Clientes::orderBy('id','ASC')->paginate($this->qtdPorPagina);
+        $prod = Produtos::orderBy('id','ASC')->paginate($this->qtdPorPagina);
 
-        return view('clientes.index', compact('cli'))
+        return view('produtos.index', compact('prod'))
                     ->with('i', ($request->input('page', 1  ) - 1) * $this->qtdPorPagina);
     }
 
@@ -29,7 +29,7 @@ class ClienteController extends Controller
      */
     public function create()
     {
-        return view('clientes.create');
+        return view('produtos.create');
     }
 
     /**
@@ -41,13 +41,13 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, ['nome'  => 'required',
-                                   'email' => 'required|email']);
+                                   'descricao' => 'required',
+                                    'preco' =>'required']);
 
         $input = $request->all();
-        $cliente = Clientes::create($input);
+        $produto = Produtos::create($input);
 
-        return redirect()->route('clientes.index')->with('success','Cliente cadastrado com successo');
-
+        return redirect()->route('produtos.index')->with('success','Produto cadastrado com successo');
     }
 
     /**
@@ -58,8 +58,8 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        $cliente = Clientes::find($id);
-        return view('clientes.show', compact('cliente'));
+        $produto = Produtos::find($id);
+        return view('produtos.show', compact('produto'));
     }
 
     /**
@@ -70,8 +70,8 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
-        $cliente = Clientes::find($id);
-        return view('clientes.edit', compact('cliente'));
+        $produto = Produtos::find($id);
+        return view('produtos.edit', compact('produto'));
     }
 
     /**
@@ -83,16 +83,17 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, ['nome'  => 'required',
-                                   'email' => 'required|email']);
+        $this->validate($request, [ 'nome'  => 'required',
+                                    'descricao' => 'required',
+                                    'preco' =>'required']);
 
-        $cliente = Clientes::find($id);
+        $produto = Produtos::find($id);
 
         $input = $request->all();
 
-        $cliente->update($input);
+        $produto->update($input);
 
-        return redirect()->route('clientes.index')->with('success','Cliente atualizado com successo');
+        return redirect()->route('produtos.index')->with('success','Produto atualizado com successo');
     }
 
     /**
@@ -103,9 +104,7 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        $cliente = Clientes::find($id)->delete();
-
-        return redirect()->route('clientes.index')->with('success','Cliente removido com successo');
-
+        $produto = Produtos::find($id)->delete();
+        return redirect()->route('produtos.index')->with('success','Vendedor removido com successo');
     }
 }

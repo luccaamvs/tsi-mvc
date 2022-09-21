@@ -8,7 +8,7 @@
             <h2>Editar Cliente</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('clients.index') }}"> Voltar</a>
+            <a class="btn btn-primary" href="{{ route('clientes.index') }}"> Voltar</a>
         </div>
     </div>
 </div>
@@ -30,7 +30,7 @@
 @endif
 
 
-{!! Form::model($cliente, ['method' => 'PATCH','route' => ['clients.update', $cliente->id]]) !!}
+{!! Form::model($cliente, ['method' => 'PATCH','route' => ['clientes.update', $cliente->id]]) !!}
 
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">

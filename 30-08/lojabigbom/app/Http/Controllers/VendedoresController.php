@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Clientes;
+use App\Models\Vendedores;
 
-class ClienteController extends Controller
+class VendedoresController extends Controller
 {
     private $qtdPorPagina = 5;
-
     /**
      * Display a listing of the resource.
      *
@@ -16,9 +15,9 @@ class ClienteController extends Controller
      */
     public function index(Request $request)
     {
-        $cli = Clientes::orderBy('id','ASC')->paginate($this->qtdPorPagina);
+        $vend = Vendedores::orderBy('id','ASC')->paginate($this->qtdPorPagina);
 
-        return view('clientes.index', compact('cli'))
+        return view('vendedores.index', compact('vend'))
                     ->with('i', ($request->input('page', 1  ) - 1) * $this->qtdPorPagina);
     }
 
@@ -29,7 +28,7 @@ class ClienteController extends Controller
      */
     public function create()
     {
-        return view('clientes.create');
+        return view('vendedores.create');
     }
 
     /**
@@ -41,13 +40,12 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, ['nome'  => 'required',
-                                   'email' => 'required|email']);
+                                   'matricula' => 'required']);
 
         $input = $request->all();
-        $cliente = Clientes::create($input);
+        $vendedor = Vendedores::create($input);
 
-        return redirect()->route('clientes.index')->with('success','Cliente cadastrado com successo');
-
+        return redirect()->route('vendedores.index')->with('success','Vendedor cadastrado com successo');
     }
 
     /**
@@ -58,8 +56,8 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        $cliente = Clientes::find($id);
-        return view('clientes.show', compact('cliente'));
+        $vendedor = Vendedores::find($id);
+        return view('vendedores.show', compact('vendedor'));
     }
 
     /**
@@ -70,8 +68,8 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
-        $cliente = Clientes::find($id);
-        return view('clientes.edit', compact('cliente'));
+        $vendedor = Vendedores::find($id);
+        return view('vendedores.edit', compact('vendedor'));
     }
 
     /**
@@ -84,15 +82,15 @@ class ClienteController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, ['nome'  => 'required',
-                                   'email' => 'required|email']);
+                                   'matricula' => 'required']);
 
-        $cliente = Clientes::find($id);
+        $vendedor = Vendedores::find($id);
 
         $input = $request->all();
 
-        $cliente->update($input);
+        $vendedor->update($input);
 
-        return redirect()->route('clientes.index')->with('success','Cliente atualizado com successo');
+        return redirect()->route('vendedores.index')->with('success','Vendedor atualizado com successo');
     }
 
     /**
@@ -103,9 +101,7 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        $cliente = Clientes::find($id)->delete();
-
-        return redirect()->route('clientes.index')->with('success','Cliente removido com successo');
-
+        $vendedor = Vendedores::find($id)->delete();
+        return redirect()->route('vendedores.index')->with('success','Vendedor removido com successo');
     }
 }
