@@ -2,31 +2,34 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClienteController;
-use App\Http\Controllers\VendedoresController;
-use App\Http\Controllers\ProdutosController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/avisos', function(){
-  //Comandos Exception
-  $av = ['avisos' => [0 => [ 'data' => '06/09/202',
-                             'aviso' => 'Estudar PHP',
-                             'exibir' => true],
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-                       1 => ['data' => '09/09/202',
-                             'aviso' => ' Sexta-feira',
-                             'exibir' => false],
-
-                       2 => ['data' => '18/09/202',
-                             'aviso' => ' Meu Aniversario',
-                             'exibir' => true]]];
+require __DIR__.'/auth.php';
 
 
-  return view('avisos', $av);
-});
+Route::resource('/clientes',
+                App\Http\Controllers\ClienteController::class)->middleware(['auth']);
 
-Route::resource('/clientes', App\Http\Controllers\ClienteController::class);
-Route::resource('/vendedores', App\Http\Controllers\VendedoresController::class);
-Route::resource('/produtos', App\Http\Controllers\ProdutosController::class);
+Route::resource('/vendedores',
+                App\Http\Controllers\VendedoresController::class)->middleware(['auth']);
+
+Route::resource('/produtos',
+                App\Http\Controllers\ProdutosController::class)->middleware(['auth']);
