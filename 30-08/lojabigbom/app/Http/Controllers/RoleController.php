@@ -11,7 +11,7 @@ class RoleController extends Controller
 
     public function __contruct(){
 
-                // https://docs.spatie.be/laravel-permission/v3/introduction
+        // https://docs.spatie.be/laravel-permission/v3/introduction
 
         $this -> middleware('permission:role-list|role-create|role-edit|role-delete',
                             ['only' => ['index','store']]);
@@ -63,14 +63,14 @@ class RoleController extends Controller
     {
         $this -> validate($request,[
             'name' => 'required|unique:roles,name',
-            'permission' => 'required'
+            'permissions' => 'required'
         ]);
 
 
         $role = Role::create(['name' => $request->input('name')]);
-        $role->syncPermissions($request->input('permission'));
+        $role->syncPermissions($request->input('permissions'));
 
-        return redirect()-> route('roles.index')->with('sucess',
+        return redirect()-> route('roles.index')->with('success',
         'Perfil Criado com Sucesso!');
     }
 
@@ -127,7 +127,7 @@ class RoleController extends Controller
         $role   =   Role::find($id);
         $role   ->  name = $request -> input('name');
         $role   ->  save();
-        $role   ->  syncPermissions($request->input('permission'));
+        $role   ->  syncPermissions($request->input('permissions'));
 
         return redirect()   ->  route('roles.index')    ->  with('success', 'Perfil atualizado');
 
@@ -143,6 +143,6 @@ class RoleController extends Controller
     {
         DB::table("roles")->where('id',$id)->delete();
 
-        return redirect()->route('roles.index')->with('Sucess', 'Perfil apagado');
+        return redirect()->route('roles.index')->with('Success', 'Perfil apagado');
     }
 }
