@@ -18,7 +18,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('v1')->group(static function()
+Route::post('login', [App\Http\Controllers\APIController::class, 'login']);
+
+Route::get('logout', [App\Http\Controllers\APIController::class, 'logout']);
+
+
+Route::group(['middleware' => 'auth.jwt', 'prefix' => 'v1'], static function()
 {
     Route::get('/vendedores', [App\Http\Controllers\VendendoresApiController::class, 'index']);
     Route::post('/vendedores', [App\Http\Controllers\VendendoresApiController::class, 'store']);
@@ -27,7 +32,7 @@ Route::prefix('v1')->group(static function()
     Route::put('/vendedores/{id}', [App\Http\Controllers\VendendoresApiController::class, 'update']);
 });
 
-Route::prefix('c1')->group(static function()
+Route::group(['middleware' => 'auth.jwt', 'prefix' => 'c1'], static function()
 {
     Route::get('/clientes', [App\Http\Controllers\ClientesApiController::class, 'index']);
     Route::post('/clientes', [App\Http\Controllers\ClientesApiController::class, 'store']);
@@ -36,7 +41,7 @@ Route::prefix('c1')->group(static function()
     Route::put('/clientes/{id}', [App\Http\Controllers\ClientesApiController::class, 'update']);
 });
 
-Route::prefix('p1')->group(static function()
+Route::group(['middleware' => 'auth.jwt', 'prefix' => 'p1'], static function()
 {
     Route::get('/produtos', [App\Http\Controllers\ProdutosApiController::class, 'index']);
     Route::post('/produtos', [App\Http\Controllers\ProdutosApiController::class, 'store']);
